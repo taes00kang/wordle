@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 
 import nookies from "nookies";
 import { saveAnswer, refreshAnswer } from "../store/guessesSlice";
-import { ThemeToggle, Panel } from "../components";
+import { ThemeToggle, Board } from "../components";
 
 interface Props {
   answer_from_cookie: string;
@@ -45,7 +45,7 @@ const Home: NextPage<Props> = ({ answer_from_cookie }) => {
         <ThemeToggle />
       </div>
 
-      <Panel />
+      <Board />
 
       <div>{answer}</div>
     </div>

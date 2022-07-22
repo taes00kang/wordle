@@ -175,7 +175,6 @@ const data: string[] = [
   "equal",
   "ergot",
   "ethic",
-  "exact",
   "exist",
   "extra",
   "faint",

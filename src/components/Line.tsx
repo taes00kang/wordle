@@ -7,14 +7,13 @@ import { motion, useAnimationControls } from "framer-motion";
 interface Props {
   line: string;
   isValidGuess: boolean;
-  nthLine: number;
-  setIsValidGuess: React.Dispatch<React.SetStateAction<boolean>>;
+  lineIndex: number;
 }
 
 const lineVariants = {
-    valid: {
-        x: 0
-    },
+  valid: {
+    x: 0,
+  },
   notValid: {
     x: [5, -5, 5, -5, 5, -5, 0],
   },
@@ -22,17 +21,11 @@ const lineVariants = {
 
 const WORD_LENGTH = 5;
 
-export const Line: React.FC<Props> = ({
-  line,
-  nthLine,
-  isValidGuess,
-  setIsValidGuess,
-}) => {
-
+export const Line: React.FC<Props> = ({ line, lineIndex, isValidGuess }) => {
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
 
-  const isCurrentLine = currentLine === nthLine
-  
+  const isCurrentLine = currentLine === lineIndex;
+
   const tiles: string[] = [];
 
   for (let i = 0; i < WORD_LENGTH; i++) {
@@ -43,11 +36,11 @@ export const Line: React.FC<Props> = ({
     <motion.div
       className="flex gap-2"
       variants={lineVariants}
-      animate={isCurrentLine && !isValidGuess ? "notValid":"valid"}
+      animate={isCurrentLine && !isValidGuess ? "notValid" : "valid"}
     >
       {tiles.map((tile, i) => {
         const value = line[i];
-        return <Box value={value} key={i} boxIndex={i} isCurrentLine={isCurrentLine} />;
+        return <Box value={value} key={i} boxIndex={i} lineIndex={lineIndex} />;
       })}
     </motion.div>
   );

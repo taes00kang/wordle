@@ -4,9 +4,10 @@ import type { Result } from ".";
 
 const initialState = {
   answer: "",
-  lines: Array<string>(6).fill(""),
+  lines: new Array<string>(6).fill(""),
   currentLine: 0,
-  lineResult: Array<Result>(5).fill("notMatched"),
+  resultsTable: new Array<Result[]>(6).fill(Array(5).fill("notMatched")),
+  isCorrectAnswer: false,
 };
 
 const guessesSlice = createSlice({
@@ -34,11 +35,20 @@ const guessesSlice = createSlice({
       for (let i = 0; i < state.lines[state.currentLine].length; i++) {
         if (state.answer.includes(state.lines[state.currentLine][i])) {
           if (state.answer[i] === state.lines[state.currentLine][i]) {
-            state.lineResult[i] = "matched";
+            state.resultsTable[state.currentLine][i] = "matched";
           } else {
-            state.lineResult[i] = "wrongPlace";
+            state.resultsTable[state.currentLine][i] = "wrongPlace";
           }
         }
+      }
+      state.currentLine++;
+      if (
+        state.resultsTable[state.currentLine - 1].every(
+          (value) => value === "matched"
+        )
+      ) {
+        state.isCorrectAnswer = true;
+        console.log("answer is correct");
       }
     },
   },

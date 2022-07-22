@@ -5,20 +5,30 @@ import { useAppSelector, Result } from "../store";
 interface Props {
   value: string;
   boxIndex: number;
-  isCurrentLine: boolean;
+  lineIndex: number;
 }
 
-export const Box: React.FC<Props> = ({ value, boxIndex, isCurrentLine }) => {
+export const Box: React.FC<Props> = ({
+  value,
+  boxIndex,
+  lineIndex,
+}) => {
   const [result, setResult] = useState<Result>("notMatched");
   const [active, setActive] = useState(false);
-  const lineResult = useAppSelector((state) => state.guesses.lineResult);
+  const resultsTable = useAppSelector((state) => state.guesses.resultsTable);
+  const currentLine = useAppSelector((state) => state.guesses.currentLine);
 
   useEffect(() => {
-    if (isCurrentLine) {
-      setResult(lineResult[boxIndex]);
-      console.log(lineResult);
+    setResult(resultsTable[lineIndex][boxIndex]);
+  }, [resultsTable]);
+
+  useEffect(() => {
+    if(currentLine - 1 === lineIndex) {
+      setTimeout(() => {
+        setActive(true)
+      }, boxIndex * 300);
     }
-  }, [lineResult]);
+  },[currentLine])
 
   const { theme } = useTheme();
   return (
