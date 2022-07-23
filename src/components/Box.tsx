@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useAppSelector, Result } from "../store";
+import { motion } from 'framer-motion'
 
 interface Props {
   value: string;
   boxIndex: number;
   lineIndex: number;
+}
+
+const variants = {
+  initial: {
+    scale: 1
+  },
+
+  valueEntered: {
+    scale: [1, 1.1, 1]
+  },
+
 }
 
 export const Box: React.FC<Props> = ({
@@ -32,11 +44,17 @@ export const Box: React.FC<Props> = ({
 
   const { theme } = useTheme();
   return (
-    <div
+    <motion.div
       className={`box ${active && "active"} flex items-center justify-center`}
-      onClick={() => setActive(!active)}
+      variants={variants}
+      animate={value ? "valueEntered": "initial"}
+      transition={{
+        duration: .1,
+        type:"spring"
+      }}
+      
     >
-      <h1 className="capitalize">{value}</h1>
+      <h1 className={`capitalize ${theme === "dark"? "text-white": "text-black"}`}>{value}</h1>
       <div className="box__content">
         <div
           className={`box__front border ${
@@ -58,7 +76,7 @@ export const Box: React.FC<Props> = ({
           }`}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 
 import nookies from "nookies";
 import { saveAnswer, refreshAnswer } from "../store/guessesSlice";
-import { ThemeToggle, Board } from "../components";
+import { ThemeToggle, Board, Keyboard } from "../components";
 
 interface Props {
   answer_from_cookie: string;
@@ -23,31 +23,31 @@ const Home: NextPage<Props> = ({ answer_from_cookie }) => {
       dispatch(refreshAnswer());
     }
   }, []);
-
   const answer = useAppSelector((state) => state.guesses.answer);
 
   const dispatch = useAppDispatch();
 
-  
-
   // setTheme("dark");
   // // setTheme("light")
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between">
+    <div className="flex min-h-screen flex-col items-center">
       <Head>
         <title>Wordle</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className="flex items-center justify-between w-full h-[50px] border-b-[.5px] border-slate-400 px-8">
-        <div>menu</div>
+        <div className="w-16">{answer}</div>
         <h1 className="flex tracking-widest">WORDLE</h1>
+
         <ThemeToggle />
       </div>
-
-      <Board />
-
-      <div>{answer}</div>
+      <div className="flex flex-col justify-between h-[calc(100vh-50px)] max-w-[500px] w-full">
+        <div className="h-full flex justify-center items-center">
+        <Board />
+        </div>
+        <Keyboard />
+      </div>
     </div>
   );
 };
