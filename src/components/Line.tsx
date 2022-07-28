@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { motion } from "framer-motion";
 import { Box } from ".";
-import { useAppSelector, useAppDispatch } from "../store";
-import { addValue } from "../store/guessesSlice";
-import { motion, useAnimationControls } from "framer-motion";
+import { useAppSelector } from "../store";
 
 interface Props {
   line: string;
@@ -23,6 +22,7 @@ const WORD_LENGTH = 5;
 
 export const Line: React.FC<Props> = ({ line, lineIndex, isValidGuess }) => {
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
+  const resultTable = useAppSelector((state) => state.guesses.resultsTable);
 
   const isCurrentLine = currentLine === lineIndex;
 
@@ -34,13 +34,15 @@ export const Line: React.FC<Props> = ({ line, lineIndex, isValidGuess }) => {
 
   return (
     <motion.div
-      className="flex gap-2"
+      className="flex gap-1 sm:gap-2 justify-center"
       variants={lineVariants}
       animate={isCurrentLine && !isValidGuess ? "notValid" : "valid"}
     >
       {tiles.map((tile, i) => {
         const value = line[i];
-        return <Box value={value} key={i} boxIndex={i} lineIndex={lineIndex} />;
+        const currentState = resultTable[lineIndex][i]
+        const isSubmitted = lineIndex < currentLine
+        return <Box value={value} key={i} currentState={currentState} isSubmitted={isSubmitted} boxIndex={i} />;
       })}
     </motion.div>
   );

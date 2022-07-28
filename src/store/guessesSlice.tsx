@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import data from "./data";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import data from "./data.json";
 import type { Result } from ".";
 
 const initialState = {
@@ -8,14 +8,21 @@ const initialState = {
   currentLine: 0,
   resultsTable: new Array<Result[]>(6).fill(Array(5).fill("notMatched")),
   isCorrectAnswer: false,
+  isValidGuess: true,
 };
 
 const guessesSlice = createSlice({
   name: "guesses",
   initialState: initialState,
   reducers: {
-    saveAnswer(state, action) {
-      state.answer = action.payload;
+    setAllStates(state, action: { payload: allStates; type: string }) {
+      const payload = action.payload;
+      state.answer = payload.answer;
+      state.lines = payload.lines;
+      state.currentLine = payload.currentLine;
+      state.resultsTable = payload.resultsTable;
+      state.isCorrectAnswer = payload.isCorrectAnswer;
+      state.isValidGuess = payload.isValidGuess;
     },
     refreshAnswer(state) {
       const newAnswer = data[Math.floor(Math.random() * (data.length + 1))];
@@ -30,6 +37,9 @@ const guessesSlice = createSlice({
         0,
         -1
       );
+    },
+    setIsValidGuess(state, action) {
+      state.isValidGuess = action.payload;
     },
     submitGuess(state) {
       for (let i = 0; i < state.lines[state.currentLine].length; i++) {
@@ -48,13 +58,19 @@ const guessesSlice = createSlice({
         )
       ) {
         state.isCorrectAnswer = true;
-        console.log("answer is correct");
       }
     },
   },
 });
 
-export const { refreshAnswer, addValue, deleteValue, saveAnswer, submitGuess } =
-  guessesSlice.actions;
+export type allStates = typeof initialState;
+export const {
+  refreshAnswer,
+  addValue,
+  deleteValue,
+  submitGuess,
+  setIsValidGuess,
+  setAllStates,
+} = guessesSlice.actions;
 
 export default guessesSlice.reducer;

@@ -1,74 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Box, Line } from ".";
-import { useAppSelector, useAppDispatch } from "../store";
-import { addValue, deleteValue, submitGuess } from "../store/guessesSlice";
-import data from "../store/data";
-import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
+import React, { useEffect } from "react";
+import { Line } from ".";
+import { useAppSelector } from "../store";
 
-interface Props {}
+interface Props {
+  handleTyping: (value: string) => void;
+}
 
-export const Panel: React.FC<Props> = () => {
-  const [isValidGuess, setIsValidGuess] = useState(true);
-
+export const Board: React.FC<Props> = ({ handleTyping }) => {
+  const isValidGuess = useAppSelector((state) => state.guesses.isValidGuess);
   const lines = useAppSelector((state) => state.guesses.lines);
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
-  const isCorrectAnswer = useAppSelector(
-    (state) => state.guesses.isCorrectAnswer
-  );
-  const { theme } = useTheme();
   const currentGuess = lines[currentLine];
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const handleType = (e: KeyboardEvent) => {
-      const isLetter = e.key.match(/^[a-z]{1}$/) !== null;
-      if (isCorrectAnswer) {
-        return;
-      }
-
-      if (isLetter) {
-        if (currentGuess.length < 5) {
-          dispatch(addValue(e.key));
-        }
-      }
-
-      if (e.key === "Backspace") {
-        dispatch(deleteValue());
-      }
-
-      if (e.key === "Enter") {
-        if (currentGuess.length === 5) {
-          if (!data.includes(currentGuess)) {
-            setIsValidGuess(false);
-            setTimeout(() => {
-              setIsValidGuess(true);
-            }, 1000);
-          } else {
-            setIsValidGuess(true);
-            dispatch(submitGuess());
-          }
-        }
-      }
+    const handleKeyboardType = (e: KeyboardEvent) => {
+      handleTyping(e.key);
     };
 
-    window.addEventListener("keydown", handleType);
+    window.addEventListener("keydown", handleKeyboardType);
 
-    return () => window.removeEventListener("keydown", handleType);
+    return () => window.removeEventListener("keydown", handleKeyboardType);
   }, [currentGuess]);
 
   return (
-    <>
+    <div className="h-full flex justify-center items-center px-10 py-4 sm:py-0 sm:px-0">
       {!isValidGuess && (
-        <div
-          className={`snackbar fixed top-[62px] left-1/2 -translate-x-1/2 px-3 py-2 text-sm rounded-sm font-semibold ${
-            theme === "dark" ? "bg-white text-black" : "bg-black text-white"
-          } `}
-        >
+        <div className="snackbar fixed top-[62px] left-1/2 -translate-x-1/2 px-3 py-2 text-sm rounded-sm font-semibold text-white dark:text-black bg-black dark:bg-white z-10">
           Not in word list
         </div>
       )}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1 sm:gap-2 w-full">
         {lines.map((line, index) => (
           <Line
             line={line}
@@ -78,8 +39,8 @@ export const Panel: React.FC<Props> = () => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
-export default Panel;
+export default Board;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "next-themes";
 import { motion, useAnimationControls } from "framer-motion";
 import { FaSun, FaMoon } from "react-icons/fa";
@@ -37,8 +37,8 @@ export const ThemeToggle: React.FC<Props> = () => {
     }
   };
   return (
-    <button
-      className={`relative w-16 h-8 bg-black rounded-full flex items-center justify-start px-2`}
+    <div
+      className={`relative w-16 h-8 bg-black rounded-full flex items-center justify-start px-2 cursor-pointer`}
       onClick={handleToggle}
     >
       <div className="flex w-full justify-between">
@@ -46,7 +46,7 @@ export const ThemeToggle: React.FC<Props> = () => {
         <FaSun size={18} color="#dec105" />
       </div>
       <motion.div
-        className="absolute left-[6px] w-6 h-6 bg-white rounded-full"
+        className="absolute left-[6px] dark:right-[6px] w-6 h-6 bg-white rounded-full"
         variants={toggleVariants}
         animate={controls}
         transition={{
@@ -54,7 +54,7 @@ export const ThemeToggle: React.FC<Props> = () => {
           duration: 0.2,
         }}
       />
-    </button>
+    </div>
   );
 };
 

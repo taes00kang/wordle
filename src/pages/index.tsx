@@ -1,53 +1,35 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { useTheme } from "next-themes";
-import { Box } from "../components";
-import { useAppSelector, useAppDispatch } from "../store";
-import data from "../store/data";
-import { useState, useEffect } from "react";
-
+import { useEffect } from "react";
 import nookies from "nookies";
-import { saveAnswer, refreshAnswer } from "../store/guessesSlice";
-import { ThemeToggle, Board, Keyboard } from "../components";
+import { useAppDispatch } from "../store";
+import { allStates } from "../store/guessesSlice";
+import { refreshAnswer, setAllStates } from "../store/guessesSlice";
+import { Header, Main } from "../components";
 
 interface Props {
-  answer_from_cookie: string;
+  previous_state: allStates;
 }
-const Home: NextPage<Props> = ({ answer_from_cookie }) => {
+const Home: NextPage<Props> = ({ previous_state }) => {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    if (answer_from_cookie) {
-      dispatch(saveAnswer(answer_from_cookie));
+    if (previous_state) {
+      dispatch(setAllStates(previous_state));
     } else {
       dispatch(refreshAnswer());
     }
   }, []);
-  const answer = useAppSelector((state) => state.guesses.answer);
 
-  const dispatch = useAppDispatch();
-
-  // setTheme("dark");
-  // // setTheme("light")
   return (
-    <div className="flex min-h-screen flex-col items-center">
+    <div className="flex flex-col w-full h-full sm:min-h-screen items-center">
       <Head>
         <title>Wordle</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex items-center justify-between w-full h-[50px] border-b-[.5px] border-slate-400 px-8">
-        <div className="w-16">{answer}</div>
-        <h1 className="flex tracking-widest">WORDLE</h1>
-
-        <ThemeToggle />
-      </div>
-      <div className="flex flex-col justify-between h-[calc(100vh-50px)] max-w-[500px] w-full">
-        <div className="h-full flex justify-center items-center">
-        <Board />
-        </div>
-        <Keyboard />
-      </div>
+      <Header />
+      <Main />
     </div>
   );
 };
@@ -56,13 +38,13 @@ export default Home;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const cookies = nookies.get(ctx);
-  const answer_from_cookie = cookies["answer_from_cookie"]
-    ? cookies["answer_from_cookie"]
+  const previous_state = cookies["previous_state"]
+    ? JSON.parse(cookies["previous_state"])
     : null;
 
   return {
     props: {
-      answer_from_cookie: answer_from_cookie,
+      previous_state: previous_state,
     },
   };
 }
