@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import data from "./data.json";
 import type { Result } from ".";
 
@@ -15,14 +15,19 @@ const guessesSlice = createSlice({
   name: "guesses",
   initialState: initialState,
   reducers: {
+    resetStates(state) {
+      Object.assign(state, initialState);
+      guessesSlice.caseReducers.refreshAnswer(state)
+    },
     setAllStates(state, action: { payload: allStates; type: string }) {
       const payload = action.payload;
-      state.answer = payload.answer;
-      state.lines = payload.lines;
-      state.currentLine = payload.currentLine;
-      state.resultsTable = payload.resultsTable;
-      state.isCorrectAnswer = payload.isCorrectAnswer;
-      state.isValidGuess = payload.isValidGuess;
+      Object.assign(state, payload);
+      // state.answer = payload.answer;
+      // state.lines = payload.lines;
+      // state.currentLine = payload.currentLine;
+      // state.resultsTable = payload.resultsTable;
+      // state.isCorrectAnswer = payload.isCorrectAnswer;
+      // state.isValidGuess = payload.isValidGuess;
     },
     refreshAnswer(state) {
       const newAnswer = data[Math.floor(Math.random() * (data.length + 1))];
@@ -66,6 +71,7 @@ const guessesSlice = createSlice({
 export type allStates = typeof initialState;
 export const {
   refreshAnswer,
+  resetStates,
   addValue,
   deleteValue,
   submitGuess,

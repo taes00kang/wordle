@@ -20,7 +20,7 @@ export const Board: React.FC<Props> = ({ handleTyping }) => {
     window.addEventListener("keydown", handleKeyboardType);
 
     return () => window.removeEventListener("keydown", handleKeyboardType);
-  }, [currentGuess]);
+  }, [lines,currentGuess]);
 
   return (
     <div className="h-full flex justify-center items-center px-10 py-4 sm:py-0 sm:px-0">

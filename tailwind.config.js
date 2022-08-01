@@ -13,6 +13,16 @@ module.exports = {
             dark: "#3A3A3C"
           },
         }
+      },
+      keyframes: {
+        sizeUpY: {
+          '0%': { transform: 'opacity(0)' },
+          '100%': { transform: 'opacity(1)' },
+        },
+      
+      },
+      animation: {
+        'scale-y': 'sizeUpY .6s ease-in-out',
       }
     },
   },

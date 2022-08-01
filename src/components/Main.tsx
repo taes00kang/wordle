@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Board, Keyboard } from ".";
 import { useAppSelector, useAppDispatch } from "../store";
 import data from "../store/data.json";
 import { allStates } from "../store/guessesSlice";
 import { setCookie, destroyCookie } from "nookies";
+import { Snackbar } from ".";
 
 import {
   addValue,
@@ -23,6 +24,8 @@ const storeStateInCookie = (state: allStates) => {
 };
 
 export const Main: React.FC<Props> = () => {
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+
   const allStates = useAppSelector((state) => state.guesses);
   const lines = useAppSelector((state) => state.guesses.lines);
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
@@ -33,13 +36,15 @@ export const Main: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isCorrectAnswer) {
+    if (isCorrectAnswer || currentLine > 5) {
+      setTimeout(() => {
+        setSnackBarOpen(true);
+      }, 1500);
       destroyCookie(null, "previous_state");
     } else {
       storeStateInCookie(allStates);
     }
   }, [currentLine, isCorrectAnswer]);
-
 
   const handleTyping = (value: string) => {
     const isLetter = value.match(/^[a-z]{1}$/) !== null;
@@ -74,6 +79,12 @@ export const Main: React.FC<Props> = () => {
   };
   return (
     <div className="flex flex-col justify-between h-full sm:h-[calc(100vh-50px)] max-w-[500px] w-full">
+      {snackBarOpen && (
+        <Snackbar
+          type={isCorrectAnswer ? "win" : "fail"}
+          setIsOpen={setSnackBarOpen}
+        />
+      )}
       <Board handleTyping={handleTyping} />
       <Keyboard handleTyping={handleTyping} />
     </div>

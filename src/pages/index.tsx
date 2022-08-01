@@ -37,6 +37,7 @@ const Home: NextPage<Props> = ({ previous_state }) => {
 export default Home;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  // get previous state stored in cookie.
   const cookies = nookies.get(ctx);
   const previous_state = cookies["previous_state"]
     ? JSON.parse(cookies["previous_state"])

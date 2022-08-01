@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useClickOutside } from "../../hooks";
 import { motion } from "framer-motion";
+import { IoClose } from "react-icons/io5";
 
 interface Props {
   children: React.ReactNode;
@@ -56,7 +57,12 @@ export const Modal: React.FC<Props> = ({ children, setIsOpen }) => {
           duration: 0.2,
         }}
       >
-        <button className="absolute top-4 right-4"></button>
+        <button
+          className="absolute top-2 right-2"
+          onClick={() => setIsOpen(false)}
+        >
+          <IoClose size={28} />
+        </button>
         {children}
       </motion.div>
     </motion.div>

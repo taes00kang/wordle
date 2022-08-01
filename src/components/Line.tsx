@@ -40,9 +40,17 @@ export const Line: React.FC<Props> = ({ line, lineIndex, isValidGuess }) => {
     >
       {tiles.map((tile, i) => {
         const value = line[i];
-        const currentState = resultTable[lineIndex][i]
-        const isSubmitted = lineIndex < currentLine
-        return <Box value={value} key={i} currentState={currentState} isSubmitted={isSubmitted} boxIndex={i} />;
+        const currentState = resultTable[lineIndex][i];
+        const isSubmitted = lineIndex < currentLine;
+        return (
+          <Box
+            value={value}
+            key={i}
+            currentState={currentState}
+            isSubmitted={isSubmitted}
+            boxIndex={i}
+          />
+        );
       })}
     </motion.div>
   );

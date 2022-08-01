@@ -14,8 +14,12 @@ export const KeyButton: React.FC<Props> = ({ value, handleTyping }) => {
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
 
   useEffect(() => {
-    // Every time submit the guess, check if the past guesses include the value 
+    // Every time submit the guess, check if the past guesses include the value
     // and then update its current state.
+    if (currentLine === 0) {
+      // In case reset game
+      setCurrentState(null);
+    }
     for (let i = 0; i < currentLine; i++) {
       const line = lines[i].split("");
       if (line.includes(value)) {

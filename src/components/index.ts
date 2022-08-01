@@ -6,3 +6,4 @@ export { default as Line } from "./Line";
 export { default as Keyboard } from "./Keyboard";
 export { default as KeyButton } from "./KeyButton";
 export { default as Main } from "./Main";
+export { default as Snackbar } from "./Snackbar";
