@@ -22,12 +22,6 @@ const guessesSlice = createSlice({
     setAllStates(state, action: { payload: allStates; type: string }) {
       const payload = action.payload;
       Object.assign(state, payload);
-      // state.answer = payload.answer;
-      // state.lines = payload.lines;
-      // state.currentLine = payload.currentLine;
-      // state.resultsTable = payload.resultsTable;
-      // state.isCorrectAnswer = payload.isCorrectAnswer;
-      // state.isValidGuess = payload.isValidGuess;
     },
     refreshAnswer(state) {
       const newAnswer = data[Math.floor(Math.random() * (data.length + 1))];

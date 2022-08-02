@@ -1,23 +1,24 @@
-# Next.js + Tailwind CSS Example
+# Wordle
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+As I am a big fan of puzzle games, I've recently been enjoying playing [Wordle](https://www.nytimes.com/games/wordle/index.html) game. After couple of tries on this game, I figured its mechanisms for state management and animation implementation seem to be simple but not quite as easy to handle as it looks. I thought it would be fun challenging to build this game with my own stacks and logics. 
 
-## Deploy your own
+## Demo
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+[![Go to Live](https://firebasestorage.googleapis.com/v0/b/instagrid-beafb.appspot.com/o/btn-link.svg?alt=media&token=2b3c5b08-9f84-4975-a3cc-150ce45c7f26)](https://wordlebytaesoo.vercel.app/)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+![alt text](demo.gif)
 
-## How to use
+## Stacks
+- Next JS
+- Typescript 
+- Framer-motion 
+- Tailwind CSS + SCSS
+- Redux 
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## What I learned from this project
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-# or
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+- How to generate [five letter words data](https://github.com/taesookang/get_five_letter_words).
+- How to use retrieve data from **cookie** in SSR(Server Side Rendering) and fetch them into Redux store.
+- Latest **Redux**(2022) pratice with Redux toolkit.
+- Why most websites minimize use of 3D animation for mobile view. (laggy animation in most mobile web browsers)
+- How to implement **dark mode** using tailwind CSS and [next-themes](https://github.com/pacocoursey/next-themes)

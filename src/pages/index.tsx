@@ -24,8 +24,25 @@ const Home: NextPage<Props> = ({ previous_state }) => {
   return (
     <div className="flex flex-col w-full h-full sm:min-h-screen items-center">
       <Head>
-        <title>Wordle</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Wordle by Taesoo</title>
+        <link rel="shortcut icon" href="/favicon/favicon.ico?" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/favicon/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon/favicon-16x16.png"
+        />
       </Head>
 
       <Header />
