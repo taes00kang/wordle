@@ -17,9 +17,9 @@ const guessesSlice = createSlice({
   reducers: {
     resetStates(state) {
       Object.assign(state, initialState);
-      guessesSlice.caseReducers.refreshAnswer(state)
+      guessesSlice.caseReducers.refreshAnswer(state);
     },
-    setAllStates(state, action: { payload: allStates; type: string }) {
+    setAllStates(state, action: { payload: AllStates; type: string }) {
       const payload = action.payload;
       Object.assign(state, payload);
     },
@@ -62,7 +62,7 @@ const guessesSlice = createSlice({
   },
 });
 
-export type allStates = typeof initialState;
+export type AllStates = typeof initialState;
 export const {
   refreshAnswer,
   resetStates,

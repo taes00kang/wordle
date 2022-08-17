@@ -62,17 +62,21 @@ export const InfoModal: React.FC<Props> = ({ setIsOpen }) => {
             close your guess was to the word.
           </p>
         </div>
-        <div className="flex flex-col gap-2 py-4 w-full border-y border-base-gray-light/30">
+        <div className="flex flex-col gap-2 py-4 w-full border-t border-base-gray-light/30">
           <span>
             <b>Examples</b>
           </span>
           <div>
             <div>
               {examples.map((example) => (
-                <div className="flex flex-col w-full my-2 last:mb-0" key={example.value}>
+                <div
+                  className="flex flex-col w-full my-6 first:mt-2 last:mb-0"
+                  key={example.value}
+                >
                   <div className="flex w-1/2 min-w-[240px] gap-2">
                     {example.value.split("").map((letter, index) => (
                       <Box
+                        key={index}
                         value={letter}
                         boxIndex={1}
                         currentState={
@@ -84,19 +88,11 @@ export const InfoModal: React.FC<Props> = ({ setIsOpen }) => {
                       />
                     ))}
                   </div>
-                  <p className="py-4 last:pb-0">{example.desc}</p>
+                  <p className="pt-2">{example.desc}</p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-        <div className="flex w-full items-center justify-center h-20">
-          <button
-            className="uppercase font-bold px-6 py-3 bg-green-600 text-white rounded-sm shadow-md"
-            onClick={handleNewGameClick}
-          >
-            New Game
-          </button>
         </div>
       </div>
     </Modal>

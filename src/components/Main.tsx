@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useTransition } from "react";
 import { Board, Keyboard } from ".";
 import { useAppSelector, useAppDispatch } from "../store";
 import data from "../store/data.json";
-import { allStates } from "../store/guessesSlice";
 import { setCookie, destroyCookie } from "nookies";
 import { Snackbar } from ".";
 
 import {
+  AllStates,
   addValue,
   deleteValue,
   setIsValidGuess,
   submitGuess,
 } from "../store/guessesSlice";
 
+import { appendToHistory, IGameHistory } from "../store/historySlice";
+
 interface Props {}
 
-const storeStateInCookie = (state: allStates) => {
-  const stringfiedState = JSON.stringify(state);
-  setCookie(null, "previous_state", stringfiedState, {
+const storeStateInCookie = (state: AllStates) => {
+  const stringifiedState = JSON.stringify(state);
+  setCookie(null, "previous_state", stringifiedState, {
     maxAge: 7 * 24 * 60 * 60,
     path: "/",
   });
 };
 
+const storeHistoryInCookie = (history: IGameHistory) => {
+  const stringifiedHistory = JSON.stringify(history);
+  setCookie(null, "game_history", stringifiedHistory, {
+    path: "/",
+  });
+};
 export const Main: React.FC<Props> = () => {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
@@ -35,16 +43,27 @@ export const Main: React.FC<Props> = () => {
   const currentGuess = lines[currentLine];
   const dispatch = useAppDispatch();
 
+  const gameHistory = useAppSelector((state) => state.history);
+
+  const gameOver = isCorrectAnswer || currentLine > 5;
+
   useEffect(() => {
-    if (isCorrectAnswer || currentLine > 5) {
+    if (gameOver) {
+      isCorrectAnswer
+        ? dispatch(appendToHistory(currentLine))
+        : dispatch(appendToHistory("lose"));
+      destroyCookie(null, "previous_state");
       setTimeout(() => {
         setSnackBarOpen(true);
       }, 1500);
-      destroyCookie(null, "previous_state");
     } else {
       storeStateInCookie(allStates);
     }
-  }, [currentLine, isCorrectAnswer]);
+  }, [currentLine, gameOver]);
+
+  useEffect(() => {
+    storeHistoryInCookie(gameHistory);
+  }, [gameHistory]);
 
   const handleTyping = (value: string) => {
     const isLetter = value.match(/^[a-z]{1}$/) !== null;
