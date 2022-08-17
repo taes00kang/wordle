@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Modal } from ".";
 import { useAppDispatch } from "../../store";
 import { resetStates } from "../../store/guessesSlice";
 import { destroyCookie } from "nookies";
 import { useAppSelector } from "../../store";
+
+// components
+import { ThemeToggle } from "../.";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,8 +47,6 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
 
   const data = useMemo(() => getGameData(), [gameHistory.playHistory]);
 
-  console.log(data);
-
   const handleNewGameClick = () => {
     dispatch(resetStates());
     setIsOpen(false);
@@ -61,7 +62,7 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
             <span className="text-xs text-center">Played</span>
           </div>
           <div className={STAT_BOX_CLASSNAME}>
-            <h1>{data.percentWins}</h1>
+            <h1>{data.percentWins ? data.percentWins : 0}</h1>
             <span className="text-xs text-center">Win %</span>
           </div>
           <div className={STAT_BOX_CLASSNAME}>
@@ -74,7 +75,9 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
           </div>
         </div>
         <div className="flex flex-col items-center gap-2 py-4 w-full border-y border-base-gray-light/30">
-          <h2 className="uppercase tracking-wider font-bold text-lg">Distribution</h2>
+          <h2 className="uppercase tracking-wider font-bold text-lg">
+            Distribution
+          </h2>
           <ul className="flex flex-col gap-1 w-full px-2 sm:px-10 my-2">
             {Object.keys(data.distribution).map((key) => {
               const keyValue = parseInt(key);
@@ -85,9 +88,9 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
                 <li className="flex font-bold w-full">
                   <div className="min-w-[24px]">{keyValue} :</div>
                   <div
-                    className="flex bg-base-gray-dark justify-end min-w-[24px] px-2"
+                    className="flex text-white bg-base-gray-light dark:bg-base-gray-dark justify-end min-w-[24px] px-2"
                     style={{
-                      width:`${(count / maxCount) * 100}%`,
+                      width: `${(count / maxCount) * 100}%`,
                     }}
                   >
                     {count}
@@ -97,7 +100,11 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
             })}
           </ul>
         </div>
-        <div className="flex w-full items-center justify-center h-20">
+        <div className="flex flex-col w-[90%] items-center justify-center py-6 ">
+          <div className="flex w-full items-center justify-between mb-8">
+            <span className="uppercase font-bold">Dark Mode</span>
+            <ThemeToggle />
+          </div>
           <button
             className="uppercase font-bold px-6 py-3 bg-green-600 text-white rounded-sm shadow-md"
             onClick={handleNewGameClick}
