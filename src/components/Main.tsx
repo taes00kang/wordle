@@ -28,6 +28,7 @@ const storeStateInCookie = (state: AllStates) => {
 const storeHistoryInCookie = (history: IGameHistory) => {
   const stringifiedHistory = JSON.stringify(history);
   setCookie(null, "game_history", stringifiedHistory, {
+    maxAge: 300 * 24 * 60 * 60,
     path: "/",
   });
 };
