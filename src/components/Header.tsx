@@ -6,9 +6,11 @@ import { InfoModal, UserModal } from "./modals";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
-interface Props {}
+interface Props {
+  setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export const Header: React.FC<Props> = () => {
+export const Header: React.FC<Props> = ({ setSnackBarOpen }) => {
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
 
@@ -24,7 +26,12 @@ export const Header: React.FC<Props> = () => {
       </button>
       <AnimatePresence>
         {infoModalOpen && <InfoModal setIsOpen={setInfoModalOpen} />}
-        {userModalOpen && <UserModal setIsOpen={setUserModalOpen} />}
+        {userModalOpen && (
+          <UserModal
+            setIsOpen={setUserModalOpen}
+            setSnackBarOpen={setSnackBarOpen}
+          />
+        )}
       </AnimatePresence>
 
       <Image

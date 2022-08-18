@@ -10,10 +10,11 @@ import { ThemeToggle } from "../.";
 
 interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const STAT_BOX_CLASSNAME = "flex flex-col gap-2 w-14 items-center";
-export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
+export const UserModal: React.FC<Props> = ({ setIsOpen, setSnackBarOpen }) => {
   const dispatch = useAppDispatch();
   const gameHistory = useAppSelector((state) => state.history);
 
@@ -48,8 +49,9 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
   const data = useMemo(() => getGameData(), [gameHistory.playHistory]);
 
   const handleNewGameClick = () => {
-    dispatch(resetStates());
     setIsOpen(false);
+    setSnackBarOpen(false)
+    dispatch(resetStates());
     destroyCookie(null, "previous_state");
   };
   return (

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useTransition } from "react";
+import React, { useEffect } from "react";
 import { Board, Keyboard } from ".";
 import { useAppSelector, useAppDispatch } from "../store";
 import data from "../store/data.json";
 import { setCookie, destroyCookie } from "nookies";
-import { Snackbar } from ".";
 
 import {
   AllStates,
@@ -15,7 +14,9 @@ import {
 
 import { appendToHistory, IGameHistory } from "../store/historySlice";
 
-interface Props {}
+interface Props {
+  setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 const storeStateInCookie = (state: AllStates) => {
   const stringifiedState = JSON.stringify(state);
@@ -32,8 +33,7 @@ const storeHistoryInCookie = (history: IGameHistory) => {
     path: "/",
   });
 };
-export const Main: React.FC<Props> = () => {
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
+export const Main: React.FC<Props> = ({ setSnackBarOpen }) => {
 
   const allStates = useAppSelector((state) => state.guesses);
   const lines = useAppSelector((state) => state.guesses.lines);
@@ -99,12 +99,7 @@ export const Main: React.FC<Props> = () => {
   };
   return (
     <div className="flex flex-col justify-between h-full sm:h-[calc(100vh-50px)] max-w-[500px] w-full">
-      {snackBarOpen && (
-        <Snackbar
-          type={isCorrectAnswer ? "win" : "fail"}
-          setIsOpen={setSnackBarOpen}
-        />
-      )}
+      
       <Board handleTyping={handleTyping} />
       <Keyboard handleTyping={handleTyping} />
     </div>

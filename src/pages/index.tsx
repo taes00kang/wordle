@@ -1,11 +1,11 @@
+import { useState, useEffect } from "react";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
 import nookies from "nookies";
-import { useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { refreshAnswer, setAllStates } from "../store/guessesSlice";
 import { setHistory } from "../store/historySlice";
-import { Header, Main } from "../components";
+import { Header, Main, Snackbar } from "../components";
 // types
 import { AllStates } from "../store/guessesSlice";
 import { IGameHistory } from "../store/historySlice";
@@ -15,7 +15,11 @@ interface Props {
   game_history: IGameHistory;
 }
 const Home: NextPage<Props> = ({ previous_state, game_history }) => {
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const isCorrectAnswer = useAppSelector(
+    (state) => state.guesses.isCorrectAnswer
+  );
 
   useEffect(() => {
     if (previous_state && previous_state.answer !== "") {
@@ -52,8 +56,14 @@ const Home: NextPage<Props> = ({ previous_state, game_history }) => {
         />
       </Head>
 
-      <Header />
-      <Main />
+      <Header setSnackBarOpen={setSnackBarOpen} />
+      <Main setSnackBarOpen={setSnackBarOpen} />
+      {snackBarOpen && (
+        <Snackbar
+          type={isCorrectAnswer ? "win" : "fail"}
+          setIsOpen={setSnackBarOpen}
+        />
+      )}
     </div>
   );
 };
