@@ -85,7 +85,7 @@ export const UserModal: React.FC<Props> = ({ setIsOpen }) => {
               const maxCount = Math.max(...Object.values(data.distribution));
 
               return (
-                <li className="flex font-bold w-full">
+                <li className="flex font-bold w-full" key={key}>
                   <div className="min-w-[24px]">{keyValue} :</div>
                   <div
                     className="flex text-white bg-base-gray-light dark:bg-base-gray-dark justify-end min-w-[24px] px-2"

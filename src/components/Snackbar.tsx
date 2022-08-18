@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineStop, AiOutlineCheck } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { useAppSelector, useAppDispatch } from "../store";
@@ -11,12 +11,17 @@ interface Props {
 
 export const Snackbar: React.FC<Props> = ({ type, setIsOpen }) => {
   const answer = useAppSelector((state) => state.guesses.answer);
+  const currentLine = useAppSelector((state) => state.guesses.currentLine);
   const dispatch = useAppDispatch();
 
   const handleClickResetButton = () => {
     setIsOpen(false);
     dispatch(resetStates());
   };
+
+  useEffect(() => {
+    currentLine === 0 && setIsOpen(false)
+  }, [currentLine])
 
   const BUTTON_CLASSNAME =
     "flex items-center h-full px-4 whitespace-nowrap text-sm text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white";
