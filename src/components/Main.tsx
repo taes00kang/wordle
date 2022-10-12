@@ -15,26 +15,40 @@ import {
 import { appendToHistory, IGameHistory } from "../store/historySlice";
 
 interface Props {
-  setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setSnackBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const storeStateInCookie = (state: AllStates) => {
   const stringifiedState = JSON.stringify(state);
-  setCookie(null, "previous_state", stringifiedState, {
-    maxAge: 7 * 24 * 60 * 60,
+  return setCookie(null, "previous_state", stringifiedState, {
+    maxAge: 700 * 24 * 60 * 60,
+    sameSite: "lax",
     path: "/",
   });
 };
 
 const storeHistoryInCookie = (history: IGameHistory) => {
   const stringifiedHistory = JSON.stringify(history);
-  setCookie(null, "game_history", stringifiedHistory, {
-    maxAge: 300 * 24 * 60 * 60,
+  return  setCookie(null, "game_history", stringifiedHistory, {
+    maxAge: 700 * 24 * 60 * 60,
+    sameSite: "lax",
     path: "/",
   });
 };
-export const Main: React.FC<Props> = ({ setSnackBarOpen }) => {
 
+// ** In case using local storage intead of cookies **  //
+
+// const storeStateInStorage = (state: AllStates) => {
+//   const stringifiedState = JSON.stringify(state);
+//   localStorage.setItem("previous_state", stringifiedState)
+// }
+
+// const storeHistoryInStorage = (history: IGameHistory) => {
+//   const stringifiedHistory = JSON.stringify(history);
+//   localStorage.setItem("game_history", stringifiedHistory)
+// };
+
+export const Main: React.FC<Props> = ({ setSnackBarOpen }) => {
   const allStates = useAppSelector((state) => state.guesses);
   const lines = useAppSelector((state) => state.guesses.lines);
   const currentLine = useAppSelector((state) => state.guesses.currentLine);
@@ -54,16 +68,19 @@ export const Main: React.FC<Props> = ({ setSnackBarOpen }) => {
         ? dispatch(appendToHistory(currentLine))
         : dispatch(appendToHistory("lose"));
       destroyCookie(null, "previous_state");
+      // localStorage.removeItem("previous_state");
       setTimeout(() => {
         setSnackBarOpen(true);
       }, 1500);
     } else {
       storeStateInCookie(allStates);
+      // storeStateInStorage(allStates)
     }
   }, [currentLine, gameOver]);
 
   useEffect(() => {
     storeHistoryInCookie(gameHistory);
+    // storeHistoryInStorage(gameHistory)
   }, [gameHistory]);
 
   const handleTyping = (value: string) => {
@@ -99,7 +116,6 @@ export const Main: React.FC<Props> = ({ setSnackBarOpen }) => {
   };
   return (
     <div className="flex flex-col justify-between h-full sm:h-[calc(100vh-50px)] max-w-[500px] w-full">
-      
       <Board handleTyping={handleTyping} />
       <Keyboard handleTyping={handleTyping} />
     </div>

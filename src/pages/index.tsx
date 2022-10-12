@@ -15,11 +15,27 @@ interface Props {
   game_history: IGameHistory;
 }
 const Home: NextPage<Props> = ({ previous_state, game_history }) => {
+// const Home: NextPage<Props> = () => {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const dispatch = useAppDispatch();
   const isCorrectAnswer = useAppSelector(
     (state) => state.guesses.isCorrectAnswer
   );
+
+  // useEffect(() => {
+  //   const previous_state = JSON.parse(localStorage.getItem("previous_state")!)
+  //   const game_history = JSON.parse(localStorage.getItem("game_history")!)
+
+  //   if(previous_state && previous_state.answer !== "") {
+  //     dispatch(setAllStates(previous_state));
+  //   } else {
+  //     dispatch(refreshAnswer());
+  //   }
+
+  //   if(game_history) {
+  //     dispatch(setHistory(game_history))
+  //   }
+  // },[])
 
   useEffect(() => {
     if (previous_state && previous_state.answer !== "") {
